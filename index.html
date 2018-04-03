@@ -6,18 +6,23 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
 
-	<title>Memory Game!</title>
+	<title>Memory Game</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css" />
-    <link rel="stylesheet" type="text/css" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
 </head>
 
 <body>
-    <h1>Shauna's Memory Game</h1>
-    <p class='description'></p>
-    <div class="board"></div>
+    <h1>Memory Game</h1>
+    <p class='description'>The object of the game is to find the matching pair of all the cards. Select a card to see its symbol, and then select another card. If it's a matching pair both cards will remain face-up; if the cards are not a match, they will return to the face-down position and you can choose again. The game is won when all pairs have been found.</p>
+    <form id="sizePicker" onsubmit="memoryGame.getGridSize(event)">
+        Width: <input type="number" id="width" name="width" value="5">
+        Height: <input type="number" id="height" name="height" value="5">
+        <input type="submit" value="Start Memory Game!">
+    </form>
+    <div id="canvas"></div>
 
-    <script type="text/javascript" src="app.js"></script>
+    <script async type="text/javascript" src="js/app.js"></script>
 </body>
 
 </html>

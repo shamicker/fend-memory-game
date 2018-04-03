@@ -1,0 +1,13 @@
+{
+  "name": "shauna_memory_game",
+  "version": "1.0",
+  "description": "A memory game to test your memory skills!",
+  "author": "Shauna Kerr <shauna.kerr@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shamicker/fend-memory-game"
+  },
+  "dependencies": {
+    "jquery": "^3.3.1"
+  }
+}
