@@ -1,19 +1,25 @@
 var memoryGame = {
-    init: function(cardImages){
-        console.log(cardImages);
-
+    init: function(allCards){
+        console.log("memoryGame initted");
         const canvas = document.getElementById("canvas");
         let deck = [];
-
 
     },
 
     // createDeck should create an array of images, with a length of num
-    createDeck: function(num){
+    createDeck: function(num, allCards){
+        console.log("creating deck");
+        console.log("num:", num);
+        console.log(allCards);
+        // shuffle allCards
+        memoryGame.shuffleCards(allCards);
 
+        //
         while (num > 0){
             // import an image and save it to something/
 
+
+            $("<img class='card' src='images/cardImages/" + filename + "'>").appendTo("#canvas");
             num--;
         }
     },
@@ -33,16 +39,16 @@ var memoryGame = {
         return array;
     },
 
-    // getGridSize is called when user Starts the game (via button)
-    getGridSize: function(event){
+    // numPairs is called when user Starts the game (via button)
+    numPairs: function(event){
         event.preventDefault();
         event.stopPropagation();
         event.stopImmediatePropagation();
 
-        const numPairs = $("#width").value;
+        const pairs = document.getElementById("#pairs").value;
         // numPairs is half the deck
 
-        memoryGame.displayBoard(numPairs);
+        memoryGame.createDeck(pairs);
     },
 
     displayBoard: function(numPairs){
@@ -58,22 +64,6 @@ var memoryGame = {
             deck.push(card);
             numPairs--;
         }
-
-        // for each row, create row
-        // for (let ri = 0; ri < height; ri++ ){
-        //     let row = document.createElement("tr");
-
-        //     // append cells to row
-        //     for ( let cin = 0; cin < width; cin++ ){
-        //         let cell = document.createElement("td");
-        //         cell.innerHTML = "hi";
-        //         row.appendChild( cell );
-        //     }
-
-        // shuffle the cards
-
-            // append row to board
-            // board.appendChild(row);
 
 
         // display board on canvas
@@ -102,4 +92,3 @@ var memoryGame = {
 
 };
 
-// $( document ).ready( memoryGame.init() );

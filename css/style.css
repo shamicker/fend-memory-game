@@ -18,6 +18,11 @@ div {
 
 }
 
+.offlineImages {
+    /*display: none;*/
+    list-style-type: none;
+}
+
 #canvas {
     border: 2px dotted purple;
 }
