@@ -4,3 +4,20 @@ p,
 div {
     border: 1px solid red;
 }
+
+.card {
+    width: 50px;
+    height: 50px;
+}
+
+.card-hidden {
+    background: url("images/abstract-2924732_960_720.jpg");
+}
+
+.card-shown {
+
+}
+
+#canvas {
+    border: 2px dotted purple;
+}

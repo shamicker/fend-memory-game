@@ -1,26 +1,21 @@
 var memoryGame = {
-    init: function(){
+    init: function(cardImages){
+        console.log(cardImages);
+
         const canvas = document.getElementById("canvas");
-        // build grid of cards
-        let faceDown = [];
-        let faceUp = [];
-
-        // face cards and back sides (both sides are needed)
-
-
+        let deck = [];
 
 
     },
 
-    // getGridSize is called when user Starts the game (via button)
-    getGridSize: function(event){
-        event.preventDefault();
-        event.stopPropagation();
-        event.stopImmediatePropagation();
+    // createDeck should create an array of images, with a length of num
+    createDeck: function(num){
 
-        const numPairs = document.getElementById("pairs").value;
+        while (num > 0){
+            // import an image and save it to something/
 
-        memoryGame.displayBoard(numPairs);
+            num--;
+        }
     },
 
     // Shuffle function from http://stackoverflow.com/a/2450976
@@ -38,6 +33,18 @@ var memoryGame = {
         return array;
     },
 
+    // getGridSize is called when user Starts the game (via button)
+    getGridSize: function(event){
+        event.preventDefault();
+        event.stopPropagation();
+        event.stopImmediatePropagation();
+
+        const numPairs = $("#width").value;
+        // numPairs is half the deck
+
+        memoryGame.displayBoard(numPairs);
+    },
+
     displayBoard: function(numPairs){
         console.log("displayBoard is running");
         // clear the canvas!
@@ -46,6 +53,11 @@ var memoryGame = {
         // HTML for each card
         const board = document.createDocumentFragment();
 
+        // for each card
+        while (numPairs > 0) {
+            deck.push(card);
+            numPairs--;
+        }
 
         // for each row, create row
         // for (let ri = 0; ri < height; ri++ ){
@@ -61,8 +73,8 @@ var memoryGame = {
         // shuffle the cards
 
             // append row to board
-            board.appendChild(row);
-        }
+            // board.appendChild(row);
+
 
         // display board on canvas
         canvas.appendChild(board);
@@ -90,4 +102,4 @@ var memoryGame = {
 
 };
 
-$( document ).ready( memoryGame.init() );
+// $( document ).ready( memoryGame.init() );
