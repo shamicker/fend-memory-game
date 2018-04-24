@@ -4,7 +4,7 @@ let allCards = [];
   let images = [];
 
   // get ALL images!
-  const dir = "https://github.com/shamicker/fend-memory-game/tree/master/images/";
+  const dir = "https://github.com/shamicker/fend-memory-game/tree/master/images/cardImages";
   // const dir = "https://github.com/shamicker/fend-memory-game/blob/master/images/cardImages";
 
   $.ajax({
@@ -20,7 +20,7 @@ let allCards = [];
         }
 
       });
-      console.log("List of images populated");
+      console.log("List of images populated - there are", images.length);
       console.log("Shuffle these images.");
 
       // Make images global
