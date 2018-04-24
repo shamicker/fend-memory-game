@@ -1,28 +1,59 @@
-body,
+html {
+    box-sizing: border-box;
+}
+
 h1,
-p,
-div {
+.explain {
+    text-align: center;
+}
+
+p {
+    padding: 10px;
+}
+
+img {
+    height: 100%;
+    width: 100%;
+}
+
+.page {
+    max-width: 800px;
+    margin: auto;
+}
+
+.canvas {
+    border: 1px dotted black;
+    max-width: 100%;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.table {
     border: 1px solid red;
+    margin: 0 auto;
+    padding: 0;
+
+    display: inline-flex;
+    flex-flow: row wrap;
 }
 
+/*each list item*/
 .card {
-    width: 50px;
-    height: 50px;
-}
-
-.card-hidden {
-    background: url("images/abstract-2924732_960_720.jpg");
-}
-
-.card-shown {
-
-}
-
-.offlineImages {
-    /*display: none;*/
+    display: block;
+    width: 100px;
+    height: 100px;
     list-style-type: none;
+    margin: 5px;
+    /*padding: 10px;*/
+    border: 0.25px solid black;
+    border-radius: 25%;
 }
 
-#canvas {
-    border: 2px dotted purple;
+.hidden {
+
 }
+
+.shown {
+
+}
+
