@@ -100,7 +100,7 @@ function displayBoard(deck, dimensions){
     // right now it just toggles front & back
     if ( evt.target.classList.contains('hidden') ){
       showCard(evt.target);
-    } else {
+    } else if ( evt.target.parentNode.classList.contains('shown') ) {
       hideCard(evt.target.parentNode);
     }
 
