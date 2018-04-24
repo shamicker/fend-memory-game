@@ -1,32 +1,34 @@
-var getImages = {
-    init: function(){
-        let allImages = [];
+let allCards = [];
 
-        // get ALL images!
-        const dir = "https://github.com/shamicker/fend-memory-game/blob/master/images/cardImages";
+(function(){
+  let images = [];
 
-        $.ajax({
-            url: dir,
-            success: function(data){
-                // from the page, of all the anchors with hrefs,
-                $(data).find("a").attr("href", function(i, val){
+  // get ALL images!
+  const dir = "https://github.com/shamicker/fend-memory-game/tree/master/images/";
+  // const dir = "https://github.com/shamicker/fend-memory-game/blob/master/images/cardImages";
 
-                    // if it's an image add it to allImages
-                    if( val.match(/\.(jpe?g|png|svg)$/) ){
-                        let filename = this.title;
-                        allImages.push(filename);
+  $.ajax({
+    url: dir,
+    success: function(data){
+      // from the page, of all the anchors with hrefs,
+      $(data).find("a").attr("href", function(i, val){
 
-                        // write to offlineImages for a default deck
-                        // I don't think this'll work... so it's just for me right now
-                        $("<li>" + filename + "</li>").appendTo(".offlineImages");
-                    }
-                });
-            }
-        });
+        // if it's an image add it to images
+        if( val.match(/\.(jpe?g|png|svg)$/) ){
+          let filename = this.title;
+          images.push(filename.toString());
+        }
 
-        // initialize the game
-        memoryGame.init(allImages);
+      });
+      console.log("List of images populated");
+      console.log("Shuffle these images.");
+
+      // Make images global
+      allCards = images;
+
+      // shuffle the cards
+      shuffleCards(allCards);
     }
-};
+  });
+})();
 
-$( document ).ready( getImages.init() );
