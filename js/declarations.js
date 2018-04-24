@@ -70,24 +70,20 @@ function displayBoard(deck, dimensions){
   // console.log(canvas);
 
   const ul = document.createElement('ul');
-  ul.className = 'table';
   const url = "url('images/abstract-2924732_960_720.jpg') no-repeat center";
 
   deck.forEach(function(card, index){
+
     const item = document.createElement('li');
-    let img = document.createElement('img');
     item.className = `card ${card.status}`;
     item.id = card.id;
+    item.style.background = url;
+    item.style.backgroundSize = "cover";
 
-    // if hidden, show back of card
-    if (card.status === 'hidden'){
-      item.style.background = url;
-      item.style.backgroundSize = "cover";
-    } else {
-      img.src = 'images/cardImages/' + card.image;
-      item.appendChild(img);
-    }
+    let img = document.createElement('img');
+    img.src = `images/cardImages/${card.image}`;
 
+    item.appendChild(img);
     ul.appendChild(item);
   })
 
@@ -99,8 +95,14 @@ function displayBoard(deck, dimensions){
     event.stopPropagation();
     event.stopImmediatePropagation();
 
-    console.log(evt.target);
-    showCard(evt.target);
+    // console.log(evt.target);
+
+    // right now it just toggles front & back
+    if ( evt.target.classList.contains('hidden') ){
+      showCard(evt.target);
+    } else {
+      hideCard(evt.target.parentNode);
+    }
 
     // if it's the first card flipped, wait for another to flip
 
@@ -112,19 +114,19 @@ function displayBoard(deck, dimensions){
 // either add the deck to the argument, or (probably better way)
 // is to make a function to getCardObject, similar to getCatInfo
 function showCard(thisOne){
-  console.log('thisOne: ', thisOne);
-  // Flip the card over
-  let image = document.createElement('img');
-  // status is shown - and change class
   thisOne.status = "shown";
   thisOne.className = `card ${thisOne.status}`;
-  // remove cardback image and replace with img element with image
-  thisOne.style.background = "";
-  image.src = 'images/cardImages/' + thisOne.image;
+  thisOne.style.backgroundSize = 0;
 
-  thisOne.appendChild( image );
+  return thisOne;
+}
 
-  return thisOne;s
+function hideCard(thisOne){
+  thisOne.status = 'hidden';
+  thisOne.className = `card ${thisOne.status}`;
+  thisOne.style.backgroundSize = "cover";
+
+  return thisOne;
 }
 
 // my attempt at creating a dynamically-sized board,
