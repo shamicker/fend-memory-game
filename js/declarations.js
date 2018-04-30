@@ -24,14 +24,24 @@ function createDeck(num, allCards){
   // console.log("- Creating deck");
 
   let deck = [];
+
   // for each pair of cards, create object holding image filename
-  // and status (back or front), and then add each image 2x to the deck
+  // and status (hidden or shown), and then add each image 2x to the deck
   for (let i = 0; i < num; i++) {
     for (let k = 0; k < 2; k++){
+
+      let dash2;
+      // a and b instead of 0 and 1
+      if ( k === 0 ){
+        dash2 = 'a';
+      } else {
+        dash2 = 'b';
+      }
+
       let card = {
         image: allCards[i],
-        id: [i] + '-' + [k],
-        status: "back"
+        id: `${i}${dash2}-card`,
+        status: "hidden"
       };
 
     deck.push(card);
@@ -40,29 +50,21 @@ function createDeck(num, allCards){
   return deck;
 }
 
-// armed with only an id, returns a whole card object
-// function getCardObject(id){
-//   for ( card in deck){
-//     if
-//   }
-// }
-
 // either add the deck to the argument, or (probably better way)
 // is to make a function to getCardObject, similar to getCatInfo
-function showCard(thisOne){
+function flipCard(thisOne, deck, whichWay){
   console.log('thisOne:', thisOne);
-  thisOne.status = "front";
-  thisOne.className = `card ${thisOne.status}`;
+  let thisObject;
 
-  thisOne.style.backgroundImage = `url('images/cardImages/${thisOne.image}`;
+  for (i in deck) {
+    const card = deck[i];
+    if ( card.id === thisOne.id) {
+      thisObject = card;
+    }
+  }
+  thisObject.status = whichWay;
 
-  return thisOne;
-}
-
-function hideCard(thisOne){
-  thisOne.status = 'hidden';
-  thisOne.className = `card ${thisOne.status}`;
-  thisOne.style.backgroundSize = "cover";
+  thisOne.className = `card ${thisObject.status}`;
 
   return thisOne;
 }
@@ -94,13 +96,14 @@ function squareSize(numb){
 
 // Calculates total width of a single card item to dictate # columns
 // It's hard-coded because the cards don't exist yet, except in the CSS
-function hardcodeElementWidth(columns){
+function hardcodeTableWidth(columns){
+
   // padding, margin, border all have 2 sides to calculate
-  const liPadding = 10 * 2;
-  const liMargin = 10 * 2;
-  const liBorder = 1 * 2;
-  const liWidth = 100;
-  return (liWidth + liPadding + liBorder + liMargin ) * columns;
+  const liPadding = 0;
+  const liMargin = 10;
+  const liBorder = 0;
+  const liWidth = 125;
+  return (liWidth + (liPadding + liBorder + liMargin)*2 ) * columns;
 }
 
 // takes in a 'deck' (list of images) and displays them
@@ -115,84 +118,100 @@ function displayBoard(deck, dimensions){
   // create the ul that will hold the list of cards
   const ul = document.createElement('ul');
   ul.className = "table";
-  ul.style.width = hardcodeElementWidth(columns) + "px";
+  ul.style.width = hardcodeTableWidth(columns) + "px";
 
   deck.forEach(function(card, index){
     const item = document.createElement('li');
+    const imgFront = document.createElement('img');
+    const imgBack = document.createElement('img');
+
     item.className = `card ${card.status}`;
     item.id = card.id;
     // item.style.backgroundImage = `url('images/cardImages/${card.image}`;
 
-    ul.appendChild(item);
+    // to animate, create front and back img tags
+    imgFront.className = 'front';
+    imgFront.id = `${card.id}-front`;
+    imgFront.src = `images/cardImages/${card.image}`;
+    imgFront.alt = `${card.image}`;
 
-    item.addEventListener('click', function(){
-      showCard(card);
-    });
+    imgBack.className = 'back';
+    imgBack.id = `${card.id}-back`;
+    imgBack.src = 'images/abstract-2924732_960_720.jpg';
+    imgBack.alt = 'an abstract design representing the back of the card deck';
+
+    item.appendChild(imgFront);
+    item.appendChild(imgBack);
+    ul.appendChild(item);
   })
 
   canvas.appendChild(ul);
+}
 
-  // this part is temporary...
-  // for whichever li is clicked
-  // const domCardList = document.getElementsByClassName('card');
+function flipCards(deck){
+  const cardList = document.getElementsByClassName('card');
 
-  // add click fn
-  // for( let i = 0; i < domCardList.length; i++){
-  //   domCardList[i].addEventListener('click', function(){
-  //     console.log('this card:', this);
-  //     const id = this.id.charAt(0);
-  //     console.log("this id is", id);
-  //     showCard(this);
-  //   });
-  // }
+  for (let i = 0; i < cardList.length; i++){
+    cardList[i].addEventListener('click', function(){
+      console.log('this card was', this.classList[1]);
+
+      if ( this.classList[1] === 'hidden' ){
+        flipCard(this, deck, 'shown');
+      } else {
+        flipCard(this, deck, 'hidden');
+      }
+    });
+  }
+
 }
 
 
-function getPair(pairsFound){
-  let firstCard;
 
-  const canvas = document.getElementsByClassName('canvas')[0];
+// function getPair(pairsFound){
+//   let firstCard;
 
-  // click
-  canvas.addEventListener('click', function(e){
-    e.preventDefault();
-    e.stopPropagation();
-    e.stopImmediatePropagation();
+//   const canvas = document.getElementsByClassName('canvas')[0];
 
-    const clicked = e.target.parentNode;
+//   // click
+//   canvas.addEventListener('click', function(e){
+//     e.preventDefault();
+//     e.stopPropagation();
+//     e.stopImmediatePropagation();
 
-    // firstCard? set & flip
-    if ( firstCard === undefined ){
-      firstCard = clicked;
-      console.log("firstCard is:", firstCard);
-      showCard(firstCard);
+//     const clicked = e.target.parentNode;
 
-    // flip second card & check for a match
-    } else {
-      showCard(clicked);
-      console.log('firstCard again:', firstCard);
-      console.log('second card:', clicked);
-    }
+//     // firstCard? set & flip
+//     if ( firstCard === undefined ){
+//       firstCard = clicked;
+//       console.log("firstCard is:", firstCard);
+//       showCard(firstCard);
 
-    // if second card matches firstCard
-    console.log( clicked.id === firstCard.id);
-    if ( clicked.id === firstCard.id ){
+//     // flip second card & check for a match
+//     } else {
+//       showCard(clicked);
+//       console.log('firstCard again:', firstCard);
+//       console.log('second card:', clicked);
+//     }
 
-      // it's a match!
-      // subtract from pairsFound and return
-      pairsFound++;
+//     // if second card matches firstCard
+//     console.log( clicked.id === firstCard.id);
+//     if ( clicked.id === firstCard.id ){
 
-    } else {
-      // not a match...
-      // hide both cards and try again
-      hideCard(firstCard);
-      hideCard(clicked);
-    }
+//       // it's a match!
+//       // subtract from pairsFound and return
+//       pairsFound++;
+
+//     } else {
+//       // not a match...
+//       // hide both cards and try again
+//       hideCard(firstCard);
+//       hideCard(clicked);
+//     }
 
 
-  });
-  return pairsFound;
-}
+//   });
+//   return pairsFound;
+// }
 
 
 

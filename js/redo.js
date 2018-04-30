@@ -1,5 +1,4 @@
 
-
 // 1. wait for click event
 // The user Starts the game (via button)
 $("#start").click(function(){
@@ -29,6 +28,8 @@ $("#start").click(function(){
   displayBoard(deck, dimensions);
   // console.log("Is the board", dimensions[0] + "x" + dimensions[1] + "?");
 
+  // flip cards
+  flipCards(deck);
 });
 
   // 5. wait for click event1
