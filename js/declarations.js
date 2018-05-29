@@ -2,7 +2,7 @@
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffleCards(array) {
   console.log("- Shuffling");
-  console.log('length:', array.length);
+  // console.log('first:', array[0], "of", array.length);
 
   var currentIndex = array.length, temporaryValue, randomIndex;
 
@@ -17,9 +17,49 @@ function shuffleCards(array) {
   return array;
 }
 
-// createDeck returns a list of card objects,
-// of num*2 length
-// having 2 of each card ('num' pairs of cards)
+// my attempt at creating a dynamically-sized board,
+// to always contain a square (or near-square) of cells
+function squareSize(numb){
+  console.log("- Getting dimensions of", numb);
+
+  const numCards = numb * 2;
+  // find all the factors of the number
+  let factors = [];
+  for (let i=0; i <= numCards; i++){
+    if (numCards % i === 0){
+      factors.push(i);
+    }
+  }
+
+  // Find the middle-most of 'factors'.
+  // If it's not an integer, round up.
+  const middle = factors.length/2.0;
+
+  console.log('factors:', factors);
+
+  if ( Number.isInteger(middle) ){
+    // if a whole number, round down and return the 2 middles
+    return [factors[middle], factors[middle - 1]];
+  } else {
+    // otherwise, it's an odd-length list and the 2 middle factors are identical
+    return [factors[Math.floor(middle)], factors[Math.floor(middle)]];
+  }
+}
+
+// Calculates total width of a single card item (li) to dictate # columns
+// It's hard-coded because the cards don't exist yet, except in the CSS
+function hardcodeTableWidth(columns){
+
+  // padding, margin, border all have 2 sides to calculate
+  const liPadding = 0;
+  const liMargin = 10;
+  const liBorder = 0;
+  const liWidth = 125;
+  return (liWidth + (liPadding + liBorder + liMargin)*2 ) * columns;
+}
+
+// createDeck takes in a number and all the card images,
+// returns a list having 'num' pairs of card objects
 function createDeck(num, allCards){
   // console.log("- Creating deck");
 
@@ -50,64 +90,9 @@ function createDeck(num, allCards){
   return deck;
 }
 
-// either add the deck to the argument, or (probably better way)
-// is to make a function to getCardObject, similar to getCatInfo
-function flipCard(thisOne, deck, whichWay){
-  console.log('thisOne:', thisOne);
-  let thisObject;
-
-  for (i in deck) {
-    const card = deck[i];
-    if ( card.id === thisOne.id) {
-      thisObject = card;
-    }
-  }
-  thisObject.status = whichWay;
-
-  thisOne.className = `card ${thisObject.status}`;
-
-  return thisOne;
-}
-
-// my attempt at creating a dynamically-sized board,
-// to always contain a square (or near-square) of cells
-function squareSize(numb){
-  // console.log("- Getting dimensions of", numb);
-  // find all the factors of the number
-  let factors = [];
-  for (i=0; i <= numb; i++){
-    if (numb % i === 0){
-      factors.push(i);
-    }
-  }
-
-  // Find the middle-most of 'factors'.
-  // If it's not an integer, round up.
-  const middle = factors.length/2.0;
-
-  if ( Number.isInteger(middle) ){
-    // if a whole number, round down and return the 2 middles
-    return [factors[middle], factors[middle - 1]];
-  } else {
-    // otherwise, it's an odd-length list and the 2 middle factors are identical
-    return [factors[Math.floor(middle)], factors[Math.floor(middle)]];
-  }
-}
-
-// Calculates total width of a single card item to dictate # columns
-// It's hard-coded because the cards don't exist yet, except in the CSS
-function hardcodeTableWidth(columns){
-
-  // padding, margin, border all have 2 sides to calculate
-  const liPadding = 0;
-  const liMargin = 10;
-  const liBorder = 0;
-  const liWidth = 125;
-  return (liWidth + (liPadding + liBorder + liMargin)*2 ) * columns;
-}
-
-// takes in a 'deck' (list of images) and displays them
-function displayBoard(deck, dimensions){
+// takes in the dimensions from `squareSize()`
+// and displays the deck of cards
+function displayBoard(dimensions){
   const [columns, rows] = dimensions;
 
   // get DOM variable
@@ -120,7 +105,7 @@ function displayBoard(deck, dimensions){
   ul.className = "table";
   ul.style.width = hardcodeTableWidth(columns) + "px";
 
-  deck.forEach(function(card, index){
+  globalVariables.deckObj.forEach(function(card, index){
     const item = document.createElement('li');
     const imgFront = document.createElement('img');
     const imgBack = document.createElement('img');
@@ -148,70 +133,67 @@ function displayBoard(deck, dimensions){
   canvas.appendChild(ul);
 }
 
-function flipCards(deck){
-  const cardList = document.getElementsByClassName('card');
+// Takes in a card element and flips it to show the image
+function revealCard(card){
+  console.log('Reveal card!');
 
-  for (let i = 0; i < cardList.length; i++){
-    cardList[i].addEventListener('click', function(){
-      console.log('this card was', this.classList[1]);
-
-      if ( this.classList[1] === 'hidden' ){
-        flipCard(this, deck, 'shown');
-      } else {
-        flipCard(this, deck, 'hidden');
-      }
-    });
+  if ( $(card).hasClass('matched') ){
+    alert('This card already has a known match. Pick a card that is face down.');
+  } else if ( $(card).hasClass('hidden') ) {
+    $(card).removeClass('hidden').addClass('shown');
+     globalVariables.cardsSelected.push(card);
+  } else {
+    alert('This card is already shown. Pick a card that is face down.');
   }
+}
+
+// Flips 2 cards face up
+function flipCards(){
+
+  // reveals 2 card elements
+  $(".table").click(function(e){
+    console.log('tries:', globalVariables.tries+1);
+    const card = e.target.parentNode;
+
+    if (globalVariables.cardsSelected.length < 2){
+      revealCard(card);
+    }
+
+    if (globalVariables.cardsSelected.length === 2){
+      checkMatch();
+    }
+  });
 
 }
 
+// checks face-up cards for a match
+function checkMatch(){
+  console.log('--Checking for match');
+  const first = globalVariables.cardsSelected[0];
+  const second = globalVariables.cardsSelected[1];
+
+  // if shown cards are a match, add class match (stay face up)
+  if ( first.id.charAt(0) === second.id.charAt(0) ){
+    $( first ).addClass('match');
+    $( second ).addClass('match');
+    setTimeout(function(){
+      alert("It's a match!");
+    }, 1000);
+
+  // if not a match, hide cards again, tries + 1, try again
+  } else {
+    setTimeout(function(){
+      [first, second].forEach(function(card){
+        $( card ).addClass('hidden').removeClass('shown');
+      });
+    }, 1000);
+  }
+
+  globalVariables.tries += 1;
+  globalVariables.cardsSelected = [];
 
 
-// function getPair(pairsFound){
-//   let firstCard;
-
-//   const canvas = document.getElementsByClassName('canvas')[0];
-
-//   // click
-//   canvas.addEventListener('click', function(e){
-//     e.preventDefault();
-//     e.stopPropagation();
-//     e.stopImmediatePropagation();
-
-//     const clicked = e.target.parentNode;
-
-//     // firstCard? set & flip
-//     if ( firstCard === undefined ){
-//       firstCard = clicked;
-//       console.log("firstCard is:", firstCard);
-//       showCard(firstCard);
-
-//     // flip second card & check for a match
-//     } else {
-//       showCard(clicked);
-//       console.log('firstCard again:', firstCard);
-//       console.log('second card:', clicked);
-//     }
-
-//     // if second card matches firstCard
-//     console.log( clicked.id === firstCard.id);
-//     if ( clicked.id === firstCard.id ){
-
-//       // it's a match!
-//       // subtract from pairsFound and return
-//       pairsFound++;
-
-//     } else {
-//       // not a match...
-//       // hide both cards and try again
-//       hideCard(firstCard);
-//       hideCard(clicked);
-//     }
-
-
-//   });
-//   return pairsFound;
-// }
+}
 
 
 
