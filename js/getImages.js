@@ -20,8 +20,8 @@ let allCards = [];
         }
 
       });
-      console.log("List of images populated - there are", images.length);
-      console.log("Shuffle these images.");
+      // console.log("List of images populated - there are", images.length);
+      // console.log("Shuffle these images.");
 
       // Make images global
       allCards = images;

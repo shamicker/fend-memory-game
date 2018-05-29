@@ -1,3 +1,8 @@
+let globalVariables = {
+  deckObj: {},
+  tries: 0,
+  cardsSelected: []
+};
 
 // 1. wait for click event
 // The user Starts the game (via button)
@@ -5,31 +10,33 @@ $("#start").click(function(){
   event.preventDefault();
   event.stopPropagation();
   event.stopImmediatePropagation();
+
   console.log("Click! Play game!");
+  console.log("tries:", globalVariables.tries, "cardsSelected:", globalVariables.cardsSelected);
 
   // How big will the board be?
   const numPairs = $("#pairs").val();
 
   // 2. shuffle cards if they haven't been in the ajax request
-  shuffleCards(allCards);
+  // shuffleCards(allCards);
 
-  // 3. create deck
-  const deck = createDeck(numPairs, allCards);
-  console.log("Your deck has", deck.length, "cards.");
+  // 3. create the deck (populates deckObj)
+  globalVariables.deckObj = createDeck(numPairs, allCards);
+  console.log("deckObj has", globalVariables.deckObj.length, "cards.");
 
   // 3.5 shuffle the deck!
-  shuffleCards(deck);
+  shuffleCards(globalVariables.deckObj);
 
   // 3.4 Size of deck determines size of board
   // Get the board's dimensions
-  const dimensions = squareSize(deck.length);
+  const dimensions = squareSize(numPairs);
+  console.log('dimensions', dimensions);
 
   // 4. put deck on board
-  displayBoard(deck, dimensions);
-  // console.log("Is the board", dimensions[0] + "x" + dimensions[1] + "?");
+  displayBoard(dimensions);
 
   // flip cards
-  flipCards(deck);
+  flipCards();
 });
 
   // 5. wait for click event1
