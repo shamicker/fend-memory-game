@@ -2,18 +2,33 @@ html {
     box-sizing: border-box;
 }
 
-h1,
+h1 {
+    text-align: center;
+}
+
+.page {
+    max-width: 100vw;
+    margin: auto;
+}
+
+.description {
+    padding: 20px;
+    margin: auto;
+    font-size: large;
+}
+
 .explain {
     text-align: center;
 }
 
-p {
-    padding: 10px;
+input {
+    width: 100px;
 }
 
-.page {
-    max-width: 800px;
-    margin: auto;
+input::-webkit-inner-spin-button,
+input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    opacity: 0;
 }
 
 .canvas {
@@ -23,7 +38,7 @@ p {
 }
 
 .table {
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     margin: 0 auto;
     padding: 10px;
 
@@ -37,7 +52,10 @@ p {
     height: 125px;
     list-style-type: none;
     margin: 10px;
+/*    padding: 20px;
+*/    /*padding added*/
     position: relative;
+    cursor: pointer;
 }
 
 .front {
@@ -47,6 +65,11 @@ p {
     position: absolute;
     border: 1px solid black;
     border-radius: 25%;
+
+    /* initial position */
+    backface-visibility: hidden;
+    transform: perspective(500px) rotateY(-179deg);
+    transition: all 1s;
 }
 
 .back {
@@ -55,18 +78,34 @@ p {
     position: absolute;
     border: 1px solid black;
     border-radius: 25%;
-}
 
-.shown > .front,
-.hidden > .back {
-    transform: perspective(500px) rotateY(180deg);
-    backface-visibility: hidden;
-    transition: all 1s;
-}
-
-.hidden > .front,
-.shown > .back {
+    /* initial position */
     transform: perspective(500px) rotateY(0deg);
     backface-visibility: hidden;
+}
+
+.match > .front {
+    transform: rotateY(0deg);
+}
+
+.shown > .front {
+    transform: perspective(500px) rotateY(0deg);
     transition: all 1s;
 }
+.shown > .back {
+    transform: perspective(500px) rotateY(179deg);
+    transition: all 1s;
+}
+
+.hidden > .front {
+    transform: perspective(500px) rotateY(-179deg);
+    transition: all 1s;
+}
+.hidden > .back {
+    transform: perspective(500px) rotateY(0deg);
+    transition: all 1s;
+}
+
+
+
+

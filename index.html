@@ -9,15 +9,16 @@
 	<title>Memory Game</title>
 
     <script src="js/jquery-3.3.1.min.js"></script>
-    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css"> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.0/normalize.min.css">
     <link rel="stylesheet" type='text/css' href="css/style.css">
 </head>
 
 <body class='page'>
     <h1>Memory Game</h1>
-    <p class='description'>The object of the game is to find the matching pair of all the cards. Select a card to see its symbol, and then select another card. If it's a matching pair both cards will remain face-up; if the cards are not a match, they will return to the face-down position and you can choose again. The game is won when all pairs have been found.</p>
     <div class='explain'>
-        Number of pairs: <input type="number" id="pairs" value="5">
+        <!-- <p class='description'>Find all the matching pairs!</p> -->
+        <p class='description'>How many pairs do you want to find?</p>
+        <input type="number" id="pairs" value="5">
         <button id='start'>Start the game!</button>
     </div>
     <div class="canvas"></div>
