@@ -30,7 +30,6 @@ $("#start").click(function(){
   // 3.4 Size of deck determines size of board
   // Get the board's dimensions
   const dimensions = squareSize(numPairs);
-  console.log('dimensions', dimensions);
 
   // 4. put deck on board
   displayBoard(dimensions);

@@ -1,9 +1,6 @@
 
 // Shuffle function from http://stackoverflow.com/a/2450976
 function shuffleCards(array) {
-  console.log("- Shuffling");
-  // console.log('first:', array[0], "of", array.length);
-
   var currentIndex = array.length, temporaryValue, randomIndex;
 
   while (currentIndex !== 0) {
@@ -20,9 +17,8 @@ function shuffleCards(array) {
 // my attempt at creating a dynamically-sized board,
 // to always contain a square (or near-square) of cells
 function squareSize(numb){
-  console.log("- Getting dimensions of", numb);
-
   const numCards = numb * 2;
+
   // find all the factors of the number
   let factors = [];
   for (let i=0; i <= numCards; i++){
@@ -35,13 +31,12 @@ function squareSize(numb){
   // If it's not an integer, round up.
   const middle = factors.length/2.0;
 
-  console.log('factors:', factors);
-
+  // if a whole number, round down and return the 2 middles
   if ( Number.isInteger(middle) ){
-    // if a whole number, round down and return the 2 middles
     return [factors[middle], factors[middle - 1]];
+
+  // otherwise, it's an odd-length list and the 2 middle factors are identical
   } else {
-    // otherwise, it's an odd-length list and the 2 middle factors are identical
     return [factors[Math.floor(middle)], factors[Math.floor(middle)]];
   }
 }
@@ -61,32 +56,22 @@ function hardcodeTableWidth(columns){
 // createDeck takes in a number and all the card images,
 // returns a list having 'num' pairs of card objects
 function createDeck(num, allCards){
-  // console.log("- Creating deck");
-
   let deck = [];
 
-  // for each pair of cards, create object holding image filename
-  // and status (hidden or shown), and then add each image 2x to the deck
+  // for each pair of cards,
+  // create 2 card objects and add to the deck
   for (let i = 0; i < num; i++) {
     for (let k = 0; k < 2; k++){
 
-      let dash2;
-      // a and b instead of 0 and 1
-      if ( k === 0 ){
-        dash2 = 'a';
-      } else {
-        dash2 = 'b';
-      }
-
       let card = {
         image: allCards[i],
-        id: `${i}${dash2}-card`,
+        id: `${i}${k === 0 ? 'a' :'b'}-card`,
         status: "hidden"
       };
-
     deck.push(card);
     }
   }
+
   return deck;
 }
 
@@ -112,7 +97,6 @@ function displayBoard(dimensions){
 
     item.className = `card ${card.status}`;
     item.id = card.id;
-    // item.style.backgroundImage = `url('images/cardImages/${card.image}`;
 
     // to animate, create front and back img tags
     imgFront.className = 'front';
@@ -137,30 +121,34 @@ function displayBoard(dimensions){
 function revealCard(card){
   console.log('Reveal card!');
 
-  if ( $(card).hasClass('matched') ){
-    alert('This card already has a known match. Pick a card that is face down.');
+  if ( $(card).hasClass('matched') || $(card).hasClass('shown') ){
+    alert('Please pick a card that is face down.');
   } else if ( $(card).hasClass('hidden') ) {
     $(card).removeClass('hidden').addClass('shown');
      globalVariables.cardsSelected.push(card);
-  } else {
-    alert('This card is already shown. Pick a card that is face down.');
   }
 }
 
 // Flips 2 cards face up
 function flipCards(){
 
-  // reveals 2 card elements
   $(".table").click(function(e){
     console.log('tries:', globalVariables.tries+1);
-    const card = e.target.parentNode;
+    console.log('e.target', e);
 
-    if (globalVariables.cardsSelected.length < 2){
-      revealCard(card);
-    }
+    if ( e.target !== e.currentTarget ){
+      const card = e.target.parentNode;
 
-    if (globalVariables.cardsSelected.length === 2){
-      checkMatch();
+      console.log('card', card);
+
+      // flips only 2 cards
+      if (globalVariables.cardsSelected.length < 2){
+        revealCard(card);
+      }
+
+      if (globalVariables.cardsSelected.length === 2){
+        checkMatch();
+      }
     }
   });
 
@@ -178,7 +166,7 @@ function checkMatch(){
     $( second ).addClass('match');
     setTimeout(function(){
       alert("It's a match!");
-    }, 1000);
+    }, 500);
 
   // if not a match, hide cards again, tries + 1, try again
   } else {
