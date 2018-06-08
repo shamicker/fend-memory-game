@@ -2,8 +2,11 @@ html {
     box-sizing: border-box;
 }
 
-h1 {
+h1,
+h2 {
+    background-color: white;
     text-align: center;
+    font-size: xx-large;
 }
 
 .page {
@@ -19,10 +22,12 @@ h1 {
 
 .explain {
     text-align: center;
+    border: none;
+    position: relative;
 }
 
 input {
-    width: 100px;
+    width: 50px;
 }
 
 input::-webkit-inner-spin-button,
@@ -31,10 +36,13 @@ input::-webkit-outer-spin-button {
     opacity: 0;
 }
 
+button {
+    cursor: pointer;
+}
+
 .canvas {
     max-width: 100%;
     margin: 20px auto;
-    padding: 20px;
 }
 
 .table {
@@ -52,11 +60,10 @@ input::-webkit-outer-spin-button {
     height: 125px;
     list-style-type: none;
     margin: 10px;
-/*    padding: 20px;
-*/    /*padding added*/
     position: relative;
     cursor: pointer;
-    border-radius: 25%;
+    border-radius: 10%;
+    box-shadow: 7px 10px 10px 0 #ccc;
 }
 
 .front {
@@ -66,7 +73,7 @@ input::-webkit-outer-spin-button {
     padding: 5%;
     position: absolute;
     border: 1px solid black;
-    border-radius: 25%;
+    border-radius: 10%;
 
     /* initial position */
     backface-visibility: hidden;
@@ -79,7 +86,7 @@ input::-webkit-outer-spin-button {
     height: 100%;
     position: absolute;
     border: 1px solid black;
-    border-radius: 25%;
+    border-radius: 10%;
 
     /* initial position */
     transform: perspective(500px) rotateY(0deg);
@@ -108,6 +115,47 @@ input::-webkit-outer-spin-button {
     transition: all 0.5s;
 }
 
+.win {
+    border: 5px groove green;
+    box-shadow: 14px 20px 20px 0 #BCBCBCFF;
+    border-radius: 5px;
+    width: 60%;
+    height: 65%;
+    background-image: url(../images/fireworks-788799_640.png);
+    background-position: center;
+    background-size: 150%;
+}
 
+.dialog {
+    text-align: center;
+    /*width: fit-content;*/
+    float: right;
+    position: relative;
+    /*top: 20%;*/
+}
 
+.congrats {
+    /*border: 1px solid red;*/
+    background-color: white;
+    border-radius: 25px;
+    width: fit-content;
+    margin: 0.7em auto;
+    padding: 0.25px;
+}
 
+.congrats.header {
+    /*margin: ;*/
+}
+
+.congrats.p {
+
+}
+
+menu {
+    -webkit-padding-start: 0;
+}
+
+.menu-item {
+    margin: 1%;
+    border-radius: 5px;
+}

@@ -15,15 +15,35 @@
 
 <body class='page'>
     <h1>Memory Game</h1>
-    <div class='explain'>
-        <!-- <p class='description'>Find all the matching pairs!</p> -->
-        <p class='description'>How many pairs do you want to find?</p>
-        <input type="number" id="pairs" value="5">
-        <button id='start'>Start the game!</button>
-    </div>
+    <dialog open class='explain'>
+        <form method='dialog' class='dialog'>
+            <p class='description'>How many pairs do you want to find?</p>
+            <menu class='menu starter-menu'>
+                <input type='number' id='pairs' autofocus>
+                <button id='start' type='submit'>Start game!</button>
+            </menu>
+        </form>
+    </dialog>
     <div class="canvas"></div>
 
-    <script async src="js/getImages.js"></script>
+    <!-- Winning Modal -->
+    <dialog id='win' class='win'>
+        <form method='dialog' class='dialog'>
+            <h2 class='congrats header'>You win!!</h2>
+            <p class='congrats p'>
+                Congratulations! You found all the pairs.
+            </p>
+            <p class='congrats p'>Why not play another round?</p>
+            <menu class='menu popup-menu'>
+                <input id='plusOne' type='number' class='pairs menu-item' autofocus>
+                <button id='replay' type='submit' class='menu-item'>New game!</button>
+                <button id='cancel' type='reset' class='menu-item'>Return to board</button>
+            </menu>
+        </form>
+    </dialog>
+
+    <!-- <script async src="js/getImages.js"></script> -->
+    <script async src="js/cardImages.js"></script>
     <script async src="js/declarations.js"></script>
     <script src="js/redo.js"></script>
 </body>
