@@ -16,8 +16,8 @@ function shuffleCards(array) {
 
 // my attempt at creating a dynamically-sized board,
 // to always contain a square (or near-square) of cells
-function squareSize(numb){
-  const numCards = numb * 2;
+function squareSize(){
+  const numCards = globalVariables.numPairs * 2;
 
   // find all the factors of the number
   let factors = [];
@@ -53,18 +53,25 @@ function hardcodeTableWidth(columns){
   return (liWidth + (liPadding + liBorder + liMargin)*2 ) * columns;
 }
 
-// createDeck takes in a number and all the card images,
-// returns a list having 'num' pairs of card objects
-function createDeck(num, allCards){
+// createDeck takes in all the card images,
+// returns a list of card objects
+function createDeck(){
   let deck = [];
 
   // for each pair of cards,
   // create 2 card objects and add to the deck
-  for (let i = 0; i < num; i++) {
+  for (let i = 0; i < globalVariables.numPairs; i++) {
     for (let k = 0; k < 2; k++){
 
+      let image;
+      // if ( allCards[i] === "" || allCards.length == 0 ){
+        image = cardImages[i];
+      // } else {
+        // image = allCards[i];
+      // }
+
       let card = {
-        image: allCards[i],
+        image: image,
         id: `${i}${k === 0 ? 'a' :'b'}-card`,
         status: "hidden"
       };
@@ -117,10 +124,9 @@ function displayBoard(dimensions){
   canvas.appendChild(ul);
 }
 
-// Takes in a card element and flips it to show the image
+// Takes in a card element, flips it to show the image
+// and adds it to the global cardsSelected array
 function revealCard(card){
-  console.log('Reveal card!');
-
   if ( $(card).hasClass('matched') || $(card).hasClass('shown') ){
     alert('Please pick a card that is face down.');
   } else if ( $(card).hasClass('hidden') ) {
@@ -133,13 +139,8 @@ function revealCard(card){
 function flipCards(){
 
   $(".table").click(function(e){
-    console.log('tries:', globalVariables.tries+1);
-    console.log('e.target', e);
-
     if ( e.target !== e.currentTarget ){
       const card = e.target.parentNode;
-
-      console.log('card', card);
 
       // flips only 2 cards
       if (globalVariables.cardsSelected.length < 2){
@@ -151,7 +152,6 @@ function flipCards(){
       }
     }
   });
-
 }
 
 // checks face-up cards for a match
@@ -162,11 +162,9 @@ function checkMatch(){
 
   // if shown cards are a match, add class match (stay face up)
   if ( first.id.charAt(0) === second.id.charAt(0) ){
-    $( first ).addClass('match');
-    $( second ).addClass('match');
-    setTimeout(function(){
-      alert("It's a match!");
-    }, 500);
+
+    $( first ).add( second ).addClass('match');
+    checkWin();
 
   // if not a match, hide cards again, tries + 1, try again
   } else {
@@ -175,18 +173,44 @@ function checkMatch(){
         $( card ).addClass('hidden').removeClass('shown');
       });
     }, 1000);
+    globalVariables.mismatches += 1;
   }
 
-  globalVariables.tries += 1;
   globalVariables.cardsSelected = [];
+}
 
+// checks whether all pairs are found
+function checkWin(){
+  console.log('checking for win...');
+  const matches = document.getElementsByClassName('match').length / 2;
 
+  if ( matches == globalVariables.numPairs ){
+    const popup = document.getElementById('win');
+    // create popup modal celebrating win
+    document.getElementById('plusOne').value = `${globalVariables.numPairs +1}`;
+    setTimeout(function(){
+      popup.showModal();
+    }, 1000);
+  } else {
+
+    setTimeout(function(){
+      alert("It's a match!");
+    }, 500);
+  }
 }
 
 
+/*
+TODO List:
+V do cancel button for "return to board"
+- responsively sized cards for smaller boards!
+- make start and replay buttons the same!!!
+- fix image shadow when flipping cards
+- animate matches instead of alert
+- why does popup pop up lower (small screen) when more pairs? Is it linked to canvas?
+-
 
-
-
+*/
 
 
 
