@@ -4,8 +4,8 @@ let allCards = [];
   let images = [];
 
   // get ALL images!
-  const dir = "https://github.com/shamicker/fend-memory-game/tree/master/images/cardImages";
-  // const dir = "https://github.com/shamicker/fend-memory-game/blob/master/images/cardImages";
+  // const dir = "https://github.com/shamicker/fend-memory-game/tree/master/images/cardImages";
+  const dir = "https://github.com/shamicker/fend-memory-game/blob/master/images/cardImages";
 
   $.ajax({
     url: dir,
